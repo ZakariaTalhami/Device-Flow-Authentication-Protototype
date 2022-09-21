@@ -1,4 +1,4 @@
-import express, { json, NextFunction, Request, Response } from "express";
+import express, { json, urlencoded, NextFunction, Request, Response } from "express";
 import { HttpErrorHandlerMiddleware } from "./app/middleware";
 import { authenticationMiddleware } from "./app/middleware/authentication";
 import { openRouter, secureRouter } from "./app/route";
@@ -6,6 +6,7 @@ import { openRouter, secureRouter } from "./app/route";
 const app = express();
 
 app.use(json());
+app.use(urlencoded({ extended: true }));
 
 // OPEN ROUTER
 app.use(openRouter);
@@ -15,7 +16,6 @@ app.use(authenticationMiddleware);
 
 // SECURE ROUTER
 app.use(secureRouter);
-
 
 // Fallback
 app.all("*", async (req: Request, res: Response) => {
