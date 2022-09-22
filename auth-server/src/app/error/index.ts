@@ -1,3 +1,5 @@
+export * from "./device-token-error";
+
 import { HttpUnauthorizedError } from "./http-unauthorized-error";
 import { HttpNotFoundError } from "./http-not-found-error";
 import { HttpBadRequestError } from "./http-bad-request-error";
