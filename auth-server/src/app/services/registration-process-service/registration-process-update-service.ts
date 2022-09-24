@@ -5,7 +5,10 @@ import { IDeviceQueryResponse } from "../../inferfaces";
 import { IRegistrationProcessDoc } from "../../model/registration-process";
 import { convertTimeNotationToSeconds } from "../../utils/dates";
 import { generateAccessToken, generateRefreshToken } from "../../utils/jwt";
-import { findRegistrationProcessByDeviceCode } from "./registration-process-query-service";
+import {
+  findRegistrationProcessByDeviceCode,
+  findRegistrationProcessByUserCodeOrThrow,
+} from "./registration-process-query-service";
 
 export const getDeviceToken = async (
   clientId: string,
@@ -39,6 +42,15 @@ export const getDeviceToken = async (
     expires: convertTimeNotationToSeconds(ACCESS_TOKEN_EXPIRATION),
     scope: "read",
   };
+};
+
+export const authenticateDevice = async (userCode: string): Promise<IRegistrationProcessDoc> => {
+  let registrationProcess = await findRegistrationProcessByUserCodeOrThrow(userCode);
+
+  registrationProcess.status = RegistrationStatus.AUTHENTICATED
+  await registrationProcess.save();
+
+  return registrationProcess;
 };
 
 const isRegistrationProcessComplete = (regProcess: IRegistrationProcessDoc): boolean => {

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { deviceCodeRouter } from "./device-code";
+import { deviceRegisterRouter } from "./register";
 import { deviceTokenRouter } from "./token";
 
 const BASE_URL = "/device";
@@ -12,7 +13,7 @@ openRouter.use(BASE_URL, deviceTokenRouter);
 // ************************************
 
 // ********** SECURED ROUTES **********
-// secureRouter.use(BASE_URL, );
+secureRouter.use(BASE_URL, deviceRegisterRouter);
 // ************************************
 
 export {
