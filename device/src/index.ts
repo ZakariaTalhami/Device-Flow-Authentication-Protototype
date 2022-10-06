@@ -1,5 +1,7 @@
 import { authenticateDevice } from "./services/authentication";
-import { displayBanner } from "./utils/visuals";
+import { getRandomNumber } from "./services/number";
+import { loopingFunction } from "./utils/function";
+import { clearConsole, displayBanner, displayRandomNumber } from "./utils/visuals";
 
 const clientId = "1231654874946313258";
 
@@ -15,8 +17,19 @@ const bootDevice = async () => {
   const remoteConfig = connectToRemoteServer(clientId);
   if (!remoteConfig.isAuthenticated) {
     const authData = await authenticateDevice(clientId);
-    console.log(authData);
+    await runDeviceOperations(authData.access_token);
   }
+};
+
+const runDeviceOperations = async (token: string) => {
+  await loopingFunction(
+    async () => {
+      const randomNumber = await getRandomNumber(token);
+      displayRandomNumber(randomNumber);
+    },
+    () => false,
+    5000
+  );
 };
 
 bootDevice();

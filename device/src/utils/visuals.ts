@@ -1,4 +1,5 @@
 import { loopingFunction } from "./function";
+import figlet from "figlet";
 
 export const displayBanner = () => {
   console.log(` _   _  _____ _     _____ _____ _____   _____  _____  _____  _____ `);
@@ -41,4 +42,34 @@ export const displayLoadingDots = (loadingOptions: LoadingDotsOptions) => {
   };
 
   loopingFunction(cb, loadingOptions.hasCompleted, loadingOptions.duration);
+};
+
+export const clearConsole = () => {
+  var lines = process.stdout.rows;
+  for (var i = 0; i < lines; i++) {
+    process.stdout.cursorTo(0, i);
+    process.stdout.clearLine(0);
+  }
+
+  process.stdout.cursorTo(0, 0);
+};
+
+export const displayRandomNumber = (number: number) => {
+  clearConsole();
+
+  figlet.text(
+    number.toString(),
+    {
+      font: "Doh",
+    },
+    (err, data) => {
+      if (err) {
+        console.log("Something went wrong...");
+        console.dir(err);
+        return;
+      }
+      process.stdout.write(data || "");
+      process.stdout.cursorTo(0, process.stdout.rows);
+    }
+  );
 };
