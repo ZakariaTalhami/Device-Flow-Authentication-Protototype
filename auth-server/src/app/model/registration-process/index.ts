@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import {
-  DB_REGISTRATION_FPROCESS_COLLECTION_NAME,
+  DB_REGISTRATION_PROCESS_COLLECTION_NAME,
   DB_REGISTRATION_PROCESS_MODEL_NAME,
 } from "../../constants";
 import {
@@ -15,7 +15,7 @@ const RegistrationProcesses: IRegistrationProcessModel = mongoose.model<
 >(
   DB_REGISTRATION_PROCESS_MODEL_NAME,
   registrationprocessSchema,
-  DB_REGISTRATION_FPROCESS_COLLECTION_NAME
+  DB_REGISTRATION_PROCESS_COLLECTION_NAME
 );
 
 export { IRegistrationProcessDoc, RegistrationProcesses };
