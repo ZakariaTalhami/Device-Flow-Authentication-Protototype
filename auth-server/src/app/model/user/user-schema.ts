@@ -1,7 +1,7 @@
 import { Document, Model, Schema, Types } from "mongoose";
 import { USER_MODEL_PREFIX } from "../../constants";
 import { IUser } from "../../inferfaces";
-import { encryptPassword } from "../../utils/password-encryption";
+import { encryptPassword } from "../../utils/password";
 
 interface IUserDoc extends Document, IUser {
   createdAt: Date;

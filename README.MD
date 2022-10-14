@@ -8,7 +8,7 @@
 
 ## TODO List
 - [ ]  Backend User Authentication
-  - [ ]  User Register
+  - [X]  User Register
   - [ ]  Email Verification
   - [ ]  User Login
   - [ ]  Validate Access token
