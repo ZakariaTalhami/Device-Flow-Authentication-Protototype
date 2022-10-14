@@ -12,6 +12,10 @@
   - [ ]  Email Verification
   - [X]  User Login
   - [X]  Validate Access token
+- [ ] Device Refactor
+  - [ ] Refactor Device Models
+  - [ ] Refactor Device Token Generation
+  - [ ] Associate Device With User
 - [ ]  User Interface
   - [ ]  Register Form
   - [ ]  Login Form
