@@ -10,7 +10,7 @@
 - [ ]  Backend User Authentication
   - [X]  User Register
   - [ ]  Email Verification
-  - [ ]  User Login
+  - [X]  User Login
   - [ ]  Validate Access token
 - [ ]  User Interface
   - [ ]  Register Form

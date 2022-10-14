@@ -6,6 +6,8 @@ import { encryptPassword } from "../../utils/password";
 interface IUserDoc extends Document, IUser {
   createdAt: Date;
   updatedAt: Date;
+  verifyPassword: (password: string) => Promise<boolean>;
+  generateToken: () => Promise<string>;
 }
 
 interface IUserModel extends Model<IUserDoc> {}
@@ -30,6 +32,24 @@ const userSchema = new Schema<IUserDoc>(
   },
   {
     timestamps: true,
+    toObject: {
+      transform(doc, ret, options) {
+        ret.id = ret._id;
+
+        delete ret._id;
+        delete ret.password;
+        delete ret.__v;
+      },
+    },
+    toJSON: {
+      transform(doc, ret, options) {
+        ret.id = ret._id;
+
+        delete ret._id;
+        delete ret.password;
+        delete ret.__v;
+      },
+    },
   }
 );
 

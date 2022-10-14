@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { loginUserRouter } from "./login";
 import { signupUserRouter } from "./signup";
 
 const BASE_URL = "/user";
@@ -7,6 +8,7 @@ const secureRouter = Router();
 
 // *********** OPEN ROUTES ************
 openRouter.use(BASE_URL, signupUserRouter);
+openRouter.use(BASE_URL, loginUserRouter);
 // ************************************
 
 // ********** SECURED ROUTES **********
