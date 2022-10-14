@@ -11,7 +11,7 @@
   - [X]  User Register
   - [ ]  Email Verification
   - [X]  User Login
-  - [ ]  Validate Access token
+  - [X]  Validate Access token
 - [ ]  User Interface
   - [ ]  Register Form
   - [ ]  Login Form

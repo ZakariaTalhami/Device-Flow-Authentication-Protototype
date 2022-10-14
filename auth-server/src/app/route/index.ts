@@ -5,6 +5,7 @@ import {
 } from "./device-registration";
 import { openNumberRouter, secureNumberRouter } from "./number";
 import { openUserRouter, secureUserRouter } from "./user";
+import { validateTokenRouter } from "./validate-token";
 
 const BASE_URL = "";
 const openRouter = Router();
@@ -14,6 +15,7 @@ const secureRouter = Router();
 openRouter.use(BASE_URL, openDeviceRegistrationRouter);
 openRouter.use(BASE_URL, openUserRouter);
 openRouter.use(BASE_URL, openNumberRouter);
+openRouter.use(BASE_URL, validateTokenRouter);
 // ************************************
 
 // ********** SECURED ROUTES **********

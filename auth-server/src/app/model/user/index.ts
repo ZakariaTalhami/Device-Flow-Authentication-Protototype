@@ -10,7 +10,7 @@ userSchema.methods.verifyPassword = function (this: IUserDoc, password: string):
 
 userSchema.methods.generateToken = function (this: IUserDoc) {
   const payload = {
-    _id: this._id,
+    id: this._id,
     email: this.email,
   };
   return generateAccessToken(payload);

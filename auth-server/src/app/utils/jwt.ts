@@ -25,6 +25,14 @@ export const generateAccessToken = (payload: TokenPayload): string => {
   );
 };
 
+// TODO: fix the return type {id: string}
+export const decodeAccessToken = (token: string): any => {
+  return decodeToken(
+    token,
+    process.env.ACCESS_TOKEN_JWT_KEY as string,
+  );
+};
+
 export const generateRefreshToken = (payload: TokenPayload): string => {
   return generateToken(
     payload,
