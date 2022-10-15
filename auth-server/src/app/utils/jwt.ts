@@ -1,4 +1,6 @@
 import jwt from "jsonwebtoken";
+import { TokenType, tokenTypes } from "../enum/token-type";
+import { HttpErrors } from "../error";
 
 type TokenPayload = string | object | Buffer;
 
@@ -40,3 +42,13 @@ export const generateRefreshToken = (payload: TokenPayload): string => {
     process.env.REFRESH_TOKEN_EXPIRATION as string
   );
 };
+
+export const extractTokenTypeFromId= (id: string): TokenType => {
+  const prefix = id.substring(0, 4);
+
+  if(!tokenTypes.includes(prefix)) {
+    throw new HttpErrors.HttpBadRequestError('Invalid Token Id');
+  }
+
+  return prefix as TokenType;
+}

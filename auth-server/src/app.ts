@@ -1,4 +1,5 @@
 import express, { json, urlencoded, NextFunction, Request, Response } from "express";
+import bearerToken from "express-bearer-token";
 import { HttpErrorHandlerMiddleware } from "./app/middleware";
 import { authenticationMiddleware } from "./app/middleware/authentication";
 import { openRouter, secureRouter } from "./app/route";
@@ -6,6 +7,7 @@ import { openRouter, secureRouter } from "./app/route";
 const app = express();
 
 app.use(json());
+app.use(bearerToken());
 app.use(urlencoded({ extended: true }));
 
 // OPEN ROUTER
