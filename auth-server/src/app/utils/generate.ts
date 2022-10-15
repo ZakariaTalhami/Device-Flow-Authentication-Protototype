@@ -5,6 +5,6 @@ export const generateDeviceCode = (): string => {
   return randomUUID();
 };
 
-export const generateUserCode = (pattern: RegExp): string => {
+export const generateCodeFromPattern = (pattern: RegExp): string => {
   return randexp(pattern);
 };
