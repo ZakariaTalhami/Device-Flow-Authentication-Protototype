@@ -5,6 +5,7 @@ import { IDeviceQueryResponse } from "../../inferfaces";
 import { IRegistrationProcessDoc } from "../../model/registration-process";
 import { convertTimeNotationToSeconds } from "../../utils/dates";
 import { generateAccessToken, generateRefreshToken } from "../../utils/jwt";
+import { deviceService } from "../device";
 import {
   findRegistrationProcessByDeviceCode,
   findRegistrationProcessByUserCodeOrThrow,
@@ -28,8 +29,10 @@ export const getDeviceToken = async (
     throw new DeviceTokenError(registrationProcess.status);
   }
 
-  const accessToken = generateAccessToken({});
-  const refreshToken = generateRefreshToken({});
+  const device = await deviceService.findDeviceByClientId(clientId);
+
+  const accessToken = generateAccessToken({ id: device?.id });
+  const refreshToken = generateRefreshToken({ id: device?.id });
 
   // Update registration Process to succes after token generation
   registrationProcess.status = RegistrationStatus.SUCCESS;
@@ -47,7 +50,7 @@ export const getDeviceToken = async (
 export const authenticateDevice = async (userCode: string): Promise<IRegistrationProcessDoc> => {
   let registrationProcess = await findRegistrationProcessByUserCodeOrThrow(userCode);
 
-  registrationProcess.status = RegistrationStatus.AUTHENTICATED
+  registrationProcess.status = RegistrationStatus.AUTHENTICATED;
   await registrationProcess.save();
 
   return registrationProcess;

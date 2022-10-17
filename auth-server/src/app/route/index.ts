@@ -15,13 +15,13 @@ const secureRouter = Router();
 openRouter.use(BASE_URL, openDeviceRegistrationRouter);
 openRouter.use(BASE_URL, openUserRouter);
 openRouter.use(BASE_URL, openNumberRouter);
-openRouter.use(BASE_URL, validateTokenRouter);
 // ************************************
 
 // ********** SECURED ROUTES **********
 secureRouter.use(BASE_URL, secureDeviceRegistrationRouter);
 secureRouter.use(BASE_URL, secureUserRouter);
 secureRouter.use(BASE_URL, secureNumberRouter);
+secureRouter.use(BASE_URL, validateTokenRouter);
 // ************************************
 
 export { secureRouter, openRouter };

@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
-import { TokenType, tokenTypes } from "../enum/token-type";
+import { READABLE_TOKEN_TYPE_NAME, TokenType, tokenTypes } from "../enum/token-type";
 import { HttpErrors } from "../error";
-
-type TokenPayload = string | object | Buffer;
+import { TokenDecodedPayload, TokenPayload } from "../inferfaces";
 
 export const generateToken = (
   payload: TokenPayload,
@@ -27,12 +26,8 @@ export const generateAccessToken = (payload: TokenPayload): string => {
   );
 };
 
-// TODO: fix the return type {id: string}
-export const decodeAccessToken = (token: string): any => {
-  return decodeToken(
-    token,
-    process.env.ACCESS_TOKEN_JWT_KEY as string,
-  );
+export const decodeAccessToken = (token: string): TokenDecodedPayload => {
+  return decodeToken(token, process.env.ACCESS_TOKEN_JWT_KEY as string);
 };
 
 export const generateRefreshToken = (payload: TokenPayload): string => {
@@ -43,12 +38,16 @@ export const generateRefreshToken = (payload: TokenPayload): string => {
   );
 };
 
-export const extractTokenTypeFromId= (id: string): TokenType => {
+export const extractTokenTypeFromId = (id: string): TokenType => {
   const prefix = id.substring(0, 4);
 
-  if(!tokenTypes.includes(prefix)) {
-    throw new HttpErrors.HttpBadRequestError('Invalid Token Id');
+  if (!tokenTypes.includes(prefix)) {
+    throw new HttpErrors.HttpBadRequestError("Invalid Token Id");
   }
 
   return prefix as TokenType;
-}
+};
+
+export const getReadableIdType = (idType: TokenType) => {
+  return READABLE_TOKEN_TYPE_NAME[idType];
+};

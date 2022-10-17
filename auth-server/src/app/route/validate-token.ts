@@ -1,45 +1,44 @@
 import { Request, Response, Router } from "express";
 import { HttpErrors } from "../error";
 import { httpResponse } from "../utils/httpResponse";
-import { decodeAccessToken } from "../utils/jwt";
 import { userService } from "../services/user";
+import { DEVICE_MODEL_PREFIX, USER_MODEL_PREFIX } from "../constants";
+import { TokenValidationResponse } from "../inferfaces";
+import { deviceService } from "../services/device";
+import { getReadableIdType } from "../utils/jwt";
 
 const router = Router();
 
-const BEARER_TOKEN_START_INDEX = 7;
-const extractAuthTokenFromHeaders = (req: Request): string | null => {
-  const authHeader = req.headers.authorization;
-  if (authHeader && authHeader.startsWith("Bearer")) {
-    return authHeader.substring(BEARER_TOKEN_START_INDEX, authHeader.length);
-  }
-
-  return null;
-};
-
 router.post("/token/validate", async (req: Request, res: Response) => {
-  const authToken = extractAuthTokenFromHeaders(req);
-  if (!authToken) {
+  const payload = req.tokenPayload;
+  if (!payload) {
     throw new HttpErrors.HttpBadRequestError("Bearer authorization header not set");
   }
 
-  let response;
+  let response: TokenValidationResponse;
   try {
-    const payload = decodeAccessToken(authToken);
-
     const id: string = payload.id;
-    switch (id.substring(0, 4)) {
-      case "user":
+    const prefix = id.substring(0, 4);
+    switch (prefix) {
+      case USER_MODEL_PREFIX:
         const user = await userService.findUserById(id);
         response = {
-          entityType: "user",
-          iat: payload.iat,
-          exp: payload.exp,
+          ...payload,
+          readableEntityType: getReadableIdType(payload.entityType),
           data: user,
+        };
+        break;
+      case DEVICE_MODEL_PREFIX:
+        const device = await deviceService.findDeviceById(id);
+        response = {
+          ...payload,
+          readableEntityType: getReadableIdType(payload.entityType),
+          data: device,
         };
         break;
 
       default:
-        break;
+        throw new Error(`Unsupported token id: ${prefix}`);
     }
   } catch (error) {
     const err = error as Error;

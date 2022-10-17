@@ -1,17 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { TokenType } from "../enum/token-type";
 import { HttpErrors } from "../error";
+import { TokenDecodedPayload } from "../inferfaces";
 import { decodeAccessToken, extractTokenTypeFromId } from "../utils/jwt";
 
 declare global {
   namespace Express {
     interface Request {
-      tokenPayload?: {
-        id: string;
-        iat: number;
-        exp: number;
-        entityType: TokenType;
-      };
+      tokenPayload?: TokenDecodedPayload
     }
   }
 }
@@ -33,7 +28,7 @@ export const authenticationMiddleware = async (req: Request, res: Response, next
     };
   } catch (error) {
     const err = error as Error;
-    throw new HttpErrors.HttpUnauthorizedError("Unauthorised: " + err.name);
+    throw new HttpErrors.HttpUnauthorizedError("Unauthorised: " + err.message);
   }
 
   next();
