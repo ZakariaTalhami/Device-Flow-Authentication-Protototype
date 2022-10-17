@@ -21,6 +21,7 @@ const deviceSchema = new Schema<IDeviceDoc>(
     clientId: {
       type: String,
       required: true,
+      unique: true,
       index: true,
     },
     owner: {

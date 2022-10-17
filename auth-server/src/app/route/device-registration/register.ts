@@ -3,6 +3,7 @@ import { body } from "express-validator";
 import { USER_CODE_REGEX } from "../../constants";
 import { validateRequest } from "../../middleware";
 import { onlyTokenOfTypeUser } from "../../middleware/only-token-of-type";
+import { deviceService } from "../../services/device";
 import { registrationProcessService } from "../../services/registration-process-service";
 import { httpResponse } from "../../utils/httpResponse";
 
@@ -26,10 +27,16 @@ router.post(
   validateRequest,
   async (req: Request<any, any, RegisterDeviceBody>, res: Response) => {
     const { user_code: userCode } = req.body;
+    const userId = req.tokenPayload?.id as string;
 
-    await registrationProcessService.authenticateDevice(userCode);
+    const process = await registrationProcessService.authenticateDevice(userCode);
 
-    httpResponse.ok(res, {}, "Device registered and authenticated");
+    const device = await deviceService.createDevice({
+      clientId: process.clientId,
+      owner: userId,
+    })
+
+    httpResponse.ok(res, device, "Device registered and authenticated");
   }
 );
 
